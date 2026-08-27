@@ -27,6 +27,57 @@
         </div>
       </div>
 
+      <div class="card submitted-orders-card">
+        <div class="card-header">
+          <h3 class="card-title">{{ t('orders.submittedOrders.title') }} ({{ submittedOrders.length }})</h3>
+        </div>
+        <div v-if="submittedOrders.length === 0" class="no-submitted-orders">
+          {{ t('orders.submittedOrders.noOrders') }}
+        </div>
+        <div v-else class="table-container">
+          <table class="restock-orders-table">
+            <thead>
+              <tr>
+                <th class="col-order-number">{{ t('orders.submittedOrders.table.orderId') }}</th>
+                <th class="col-items">{{ t('orders.submittedOrders.table.items') }}</th>
+                <th class="col-value">{{ t('orders.submittedOrders.table.totalCost') }}</th>
+                <th class="col-value">{{ t('orders.submittedOrders.table.budget') }}</th>
+                <th class="col-date">{{ t('orders.submittedOrders.table.orderDate') }}</th>
+                <th class="col-date">{{ t('orders.submittedOrders.table.expectedDelivery') }}</th>
+                <th class="col-lead-time">{{ t('orders.submittedOrders.table.leadTime') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="restockOrder in submittedOrders" :key="restockOrder.id">
+                <td class="col-order-number"><strong>#{{ restockOrder.id }}</strong></td>
+                <td class="col-items">
+                  <details class="items-details">
+                    <summary class="items-summary">
+                      {{ t('orders.itemsCount', { count: restockOrder.items.length }) }}
+                    </summary>
+                    <div class="items-dropdown">
+                      <div v-for="item in restockOrder.items" :key="item.item_sku" class="item-entry">
+                        <span class="item-name">{{ translateProductName(item.item_name) }}</span>
+                        <span class="item-meta">{{ t('orders.quantity') }}: {{ item.quantity }} @ {{ currencySymbol }}{{ item.unit_cost }}</span>
+                      </div>
+                    </div>
+                  </details>
+                </td>
+                <td class="col-value"><strong>{{ currencySymbol }}{{ restockOrder.total_cost.toLocaleString() }}</strong></td>
+                <td class="col-value">{{ currencySymbol }}{{ restockOrder.budget.toLocaleString() }}</td>
+                <td class="col-date">{{ formatDate(restockOrder.order_date) }}</td>
+                <td class="col-date">{{ formatDate(restockOrder.expected_delivery) }}</td>
+                <td class="col-lead-time">
+                  <span class="badge info">
+                    {{ t('orders.submittedOrders.leadTimeDays', { count: restockOrder.lead_time_days }) }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">{{ t('orders.allOrders') }} ({{ orders.length }})</h3>
@@ -95,6 +146,7 @@ export default {
     const loading = ref(true)
     const error = ref(null)
     const orders = ref([])
+    const submittedOrders = ref([])
 
     // Use shared filters
     const {
@@ -129,6 +181,17 @@ export default {
       loadOrders()
     })
 
+    const loadSubmittedOrders = async () => {
+      try {
+        const fetchedRestockOrders = await api.getRestockOrders()
+        submittedOrders.value = fetchedRestockOrders
+          .slice()
+          .sort((a, b) => new Date(b.order_date) - new Date(a.order_date))
+      } catch (err) {
+        console.error('Failed to load submitted restock orders:', err)
+      }
+    }
+
     const getOrdersByStatus = (status) => {
       return orders.value.filter(order => order.status === status)
     }
@@ -153,13 +216,17 @@ export default {
       })
     }
 
-    onMounted(loadOrders)
+    onMounted(() => {
+      loadOrders()
+      loadSubmittedOrders()
+    })
 
     return {
       t,
       loading,
       error,
       orders,
+      submittedOrders,
       getOrdersByStatus,
       getOrderStatusClass,
       formatDate,
@@ -275,5 +342,25 @@ export default {
 .item-meta {
   font-size: 0.813rem;
   color: #64748b;
+}
+
+.submitted-orders-card {
+  margin-bottom: 1.5rem;
+}
+
+.no-submitted-orders {
+  text-align: center;
+  padding: 2rem;
+  color: #64748b;
+  font-style: italic;
+}
+
+.restock-orders-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.col-lead-time {
+  width: 130px;
 }
 </style>

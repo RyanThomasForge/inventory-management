@@ -6,6 +6,7 @@ export default {
     orders: '注文',
     finance: '財務',
     demandForecast: '需要予測',
+    restocking: '再入荷',
     companyName: '触媒コンポーネンツ',
     subtitle: '在庫管理システム'
   },
@@ -126,6 +127,20 @@ export default {
       status: 'ステータス',
       expectedDelivery: '予定配達日',
       actualDelivery: '実際の配達日'
+    },
+    submittedOrders: {
+      title: '提出済み注文',
+      noOrders: 'まだ再入荷注文が提出されていません',
+      table: {
+        orderId: '注文ID',
+        items: '品目',
+        totalCost: '合計コスト',
+        budget: '予算',
+        orderDate: '注文日',
+        expectedDelivery: '予定配達日',
+        leadTime: 'リードタイム'
+      },
+      leadTimeDays: '{count}日'
     }
   },
 
@@ -186,6 +201,43 @@ export default {
       trend: 'トレンド',
       period: '期間'
     }
+  },
+
+  // Restocking
+  restocking: {
+    title: '再入荷',
+    description: '予算を設定し、需要予測に基づいて次の再入荷注文を計画します',
+    budgetLabel: '利用可能な予算',
+    budgetHint: 'スライダーをドラッグして予算を調整してください',
+    summary: {
+      totalBudget: '総予算',
+      allocated: '割り当て済み',
+      remaining: '残り'
+    },
+    recommendedItems: '推奨品目',
+    table: {
+      sku: 'SKU',
+      itemName: '品目名',
+      trend: 'トレンド',
+      currentDemand: '現在の需要',
+      forecastedDemand: '予測需要',
+      shortfall: '不足数',
+      unitCost: '単価',
+      recommendedQuantity: '推奨数量',
+      subtotal: '小計',
+      fulfillment: '充足状況'
+    },
+    fulfillment: {
+      full: '完全',
+      partial: '部分的'
+    },
+    noRecommendations: 'この予算レベルでは推奨できる品目がありません。予算を増やしてください。',
+    placeOrder: '注文する',
+    placingOrder: '注文処理中...',
+    orderSuccess: '注文が正常に送信されました！',
+    orderSuccessDetail: '注文{orderId}を送信しました — {itemCount}品目、合計{totalCost}、{leadTime}日で到着予定。',
+    errorLoadingRecommendations: '推奨事項の読み込みに失敗しました',
+    errorSubmittingOrder: '注文の送信に失敗しました'
   },
 
   // Filters
