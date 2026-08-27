@@ -55,4 +55,4 @@ logs/
 .env
 
 .claude/settings.local.json
-
+.claude/worktrees
