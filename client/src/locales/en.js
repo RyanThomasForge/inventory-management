@@ -6,6 +6,7 @@ export default {
     orders: 'Orders',
     finance: 'Finance',
     demandForecast: 'Demand Forecast',
+    restocking: 'Restocking',
     companyName: 'Catalyst Components',
     subtitle: 'Inventory Management System'
   },
@@ -126,6 +127,20 @@ export default {
       status: 'Status',
       expectedDelivery: 'Expected Delivery',
       actualDelivery: 'Actual Delivery'
+    },
+    submittedOrders: {
+      title: 'Submitted Orders',
+      noOrders: 'No restock orders submitted yet',
+      table: {
+        orderId: 'Order ID',
+        items: 'Items',
+        totalCost: 'Total Cost',
+        budget: 'Budget',
+        orderDate: 'Order Date',
+        expectedDelivery: 'Expected Delivery',
+        leadTime: 'Lead Time'
+      },
+      leadTimeDays: '{count} days'
     }
   },
 
@@ -186,6 +201,43 @@ export default {
       trend: 'Trend',
       period: 'Period'
     }
+  },
+
+  // Restocking
+  restocking: {
+    title: 'Restocking',
+    description: 'Set your budget and let demand forecasts guide your next restock order',
+    budgetLabel: 'Available Budget',
+    budgetHint: 'Drag the slider to adjust your available budget',
+    summary: {
+      totalBudget: 'Total Budget',
+      allocated: 'Allocated',
+      remaining: 'Remaining'
+    },
+    recommendedItems: 'Recommended Items',
+    table: {
+      sku: 'SKU',
+      itemName: 'Item Name',
+      trend: 'Trend',
+      currentDemand: 'Current Demand',
+      forecastedDemand: 'Forecasted Demand',
+      shortfall: 'Shortfall',
+      unitCost: 'Unit Cost',
+      recommendedQuantity: 'Recommended Qty',
+      subtotal: 'Subtotal',
+      fulfillment: 'Fulfillment'
+    },
+    fulfillment: {
+      full: 'Full',
+      partial: 'Partial'
+    },
+    noRecommendations: 'No items to recommend at this budget level. Try increasing your budget.',
+    placeOrder: 'Place Order',
+    placingOrder: 'Placing Order...',
+    orderSuccess: 'Order placed successfully!',
+    orderSuccessDetail: 'Order {orderId} submitted — {itemCount} items, {totalCost} total, arriving in {leadTime} days.',
+    errorLoadingRecommendations: 'Failed to load recommendations',
+    errorSubmittingOrder: 'Failed to submit order'
   },
 
   // Filters
